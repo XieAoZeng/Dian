@@ -17,11 +17,11 @@ int count = sizeof (list)/sizeof(list[0]);
 void searchgood(char *input){
     for (int i=0; i < count ; i++){
         if(strcmp (list[i].number , input )==0){
-            printf ("%s\t%f\n",list[i].name , list[i].price);
+            printf ("%s\t%.2f\n",list[i].name , list[i].price);
             return ;
         }
+    }  
     printf ("not find\n");
-    }
 }
 
 void printall(){
@@ -38,7 +38,7 @@ int main(){
     while(1){
         printf(">");
         fgets(input,sizeof(input),stdin);
-        input[strcspn(input,"\n")]='\n';
+        input[strcspn(input,"\n")]='\0';
 
         if (strcmp(input,"quit")==0  || strcmp(input,"exit")==0){
             break;
