@@ -31,13 +31,19 @@ int main(){
     while(1){
         printf(">");
         fgets(input,sizeof(input),stdin);
-        input[strcspn(input,"\n")]="\0";
+        input[strcspn(input,"\n")]='\n';
 
         if (strcmp(input,"quit")==0  || strcmp(input,"exit")==0){
             break;
         }
         else if(strcmp(input,"prices")==0){
             printall();  //输出全部货物，应在开始补充一个新函数
+        }
+        else {
+            char *take =strtok(input ," ");
+            while (take != NULL){
+                
+            }
         }
     }
 }
