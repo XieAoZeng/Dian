@@ -24,6 +24,13 @@ void searchgood(char *input){
     }
 }
 
+void printall(){
+    printf("Item\tNo.\tPri.\n");
+    printf("-----------------\n");
+    for(int i=0 ; i<count ; i++){
+        printf("%s\t%s\t%.2f\n",list[i].name,list[i].number,list[i].price);
+    }
+}
 
 int main(){
     char input[100];
@@ -42,7 +49,8 @@ int main(){
         else {
             char *take =strtok(input ," ");
             while (take != NULL){
-                
+                searchgood(take);
+                take=strtok(NULL ," ");
             }
         }
     }
