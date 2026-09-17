@@ -1,5 +1,5 @@
-#include <stdio.h>;
-#include <string.h>;
+#include <stdio.h>
+#include <string.h>
 
 typedef struct {
     char name[100];
@@ -15,7 +15,7 @@ goods list[]={
 int count = sizeof (list)/sizeof(list[0]);
 //程序需要查找列表中的输入量
 void searchgood(char *input){
-    for (int i=0;i < count ; i++){
+    for (int i=0; i < count ; i++){
         if(strcmp (list[i].number , input )==0){
             printf ("%s\t%f\n",list[i].name , list[i].price);
             return ;
