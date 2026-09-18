@@ -40,7 +40,7 @@ int cartsize=0 ;  //记录购物车中货物种类
 
 
 int findgoodsindex(char *id){   //在商品列表中查找输入的商品是否存在
-    for(int i=0 ,i < count ,i++){
+    for(int i=0 ;i < count ;i++){
         if(strcmp(list[i].number,id)==0){
             return i;
         }
@@ -49,7 +49,7 @@ int findgoodsindex(char *id){   //在商品列表中查找输入的商品是否�
 }
 
 int findcartindex(char *id){   //在购物车列表中查找输入的商品是否存在
-    for(int i=0 ,i < buycount ,i++){
+    for(int i=0 ;i < cartsize ;i++){
         if(strcmp(cart[i].choose.number,id)==0){
             return i;
         }
@@ -58,7 +58,9 @@ int findcartindex(char *id){   //在购物车列表中查找输入的商品是�
 }
 
 //增减购物车内的商品
-void addgoods(){}
+void addgoods(){
+
+}
 
 int main(){
     char input[100];
@@ -86,22 +88,21 @@ int main(){
         else {          /*需实现：添加或减少商品数目*/
             char *take =strtok(input ," ");
             while (take != NULL){
-                searchgood(take);
-                take=strtok(NULL ," ");
+                int delta=1;
+                char id[50];
+                if(take[0]=="-"){
+                    delta=-1;
+                    strcpy(id,take+1);
+                }
+                else{
+                    strcpy(id,take);
+                }
+                addgoods()
+
+
+                take = strtok(NULL ," ");
             }
         }
     }
 }
 
-
-
-//程序需要查找列表中的输入量
-void searchgood(char *input){
-    for (int i=0; i < count ; i++){
-        if(strcmp (list[i].number , input )==0){
-            printf ("%s\t%.2f\n",list[i].name , list[i].price);
-            return ;
-        }
-    }  
-    printf ("not find\n");
-}
