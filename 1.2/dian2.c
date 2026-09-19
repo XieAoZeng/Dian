@@ -94,6 +94,9 @@ void addgoods(char *id, int delta){
       }
     }
     //输出当前购物车内商品以及价格等
+    cartitem *item = &cart[findcartindex(id)];
+    double sum = item->choose.price * item->buycount;
+    printf("%-10s  %.2fx%d =%.2f",item->choose.name,item->choose.price,item->buycount,sum);
 }
 
 int main(){
