@@ -38,11 +38,6 @@ void drop(){/* 清空购物车 */
 }  
  //需要实现的功能:1.添加or减少商品数目,并且显示价格  2.打印小票   3.清空记录   4.结账
 
-void drop();
-void print();
-void checkout();
-void addgoods(char *id, int delta);
-
 void print(){/*打印小票*/
     printf("Receipt\n");
     printf("%-10s %-6s %-4s %s\n","Item" ,"Pri." ,"Qty", "Amount");
@@ -151,7 +146,7 @@ int main(){
             while (take != NULL){
                 int delta=1;
                 char id[50];
-                if(take[0]=='-'){
+                if(take[0]=="-"){
                     delta=-1;
                     strcpy(id,take+1);
                 }
