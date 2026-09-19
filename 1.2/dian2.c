@@ -58,8 +58,42 @@ int findcartindex(char *id){   //在购物车列表中查找输入的商品是�
 }
 
 //增减购物车内的商品
-void addgoods(){
+void addgoods(char *id, int delta){
+    int goodsinlist = findgoodsindex(id);
+    if(goodsinlist==-1){
+        printf("未找到该商品:%s",id);
+        return ;
+    }
 
+    int goodsincart = findcartindex(id);
+    if( goodsincart == -1){//表明购物车里没有该商品
+        if(delta == -1){
+            printf("未将此物品加入购物车，无法减少其数目");
+            return;
+        }
+        else{
+            cart[cartsize].choose = list[goodsinlist];
+            cart[cartsize].buycount =1  ;
+            cartsize++;
+        }
+    }
+    else{//购物车内有该商品，要进行处理
+      if(delta == -1){
+        if (cart[goodsincart].buycount == 1){
+            for(int i = goodsincart ; i < cartsize-1 ; i++){
+                cart[i]=cart[i+1];
+            }
+            cartsize --;
+        }
+        else {        
+            cart[goodsincart].buycount += delta ;
+        }
+      }
+      else{
+        cart[goodsincart].buycount += delta;
+      }
+    }
+    //输出当前购物车内商品以及价格等
 }
 
 int main(){
@@ -97,9 +131,7 @@ int main(){
                 else{
                     strcpy(id,take);
                 }
-                addgoods()
-
-
+                addgoods(id , delta );
                 take = strtok(NULL ," ");
             }
         }
