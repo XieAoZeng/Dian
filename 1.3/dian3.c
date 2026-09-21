@@ -42,7 +42,6 @@ typedef struct {
     cartitem item[200];  //订单商品明细
     double salesum;      //订单总价
     int itemcount;       //商品数目
-    double daysum;       //当日营业额
 }Salerecord;
 
 //定义全局变量
@@ -60,7 +59,7 @@ void addgoods(char *id, int delta);
 
 //1.3新增函数
 void savetofile(Salerecord record);          //将记录写入文件
-void showsale();            //查询文件中的销售记录
+void showsale(int targetDay);            //查询文件中的销售记录
 char *getnowtime(char *str);//获取当前时间
 
 void drop(){/* 清空购物车 */
@@ -81,6 +80,44 @@ void print(){/*打印小票*/
     printf("------------------------\n");
     printf("%-10s = %.2f\n","TOTAL",total);
 } 
+
+void showsale(int targetDay){
+    FILE *fp = fopen("sale.txt" , "r");
+    if(fp==NULL){
+        printf("未找到任何销售记录。\n");
+        return ;
+    }
+    Salerecord readrecord;
+    double daysum = 0.0;
+    //表头
+    printf("Date: %d\n",targetDay);
+    printf("%-4s %-10s %-20s %s\n","No.","Time","Items","Total");
+    printf("--------------------------------------------\n");
+    //读取记录
+    char file[1000];
+    while (fgets(file,sizeof(file),fp)!=NULL){
+        char *f = strtok(file,"|");
+        readrecord.daynumber = atoi(f);
+        f = strtok(NULL,"|");
+        readrecord.salenumber = atoi(f);
+        f = strtok(NULL,"|");
+        strcpy(readrecord.saletime,f);
+        f = strtok(NULL,"|");
+        readrecord.salesum = atof(f);
+        f = strtok(NULL,"|");
+        readrecord.itemcount = atoi(f);
+        f = strtok(NULL,"|");
+
+        if(readrecord.daynumber == targetDay){
+            daysum += readrecord.salesum;
+            printf("%-4d -10s",readrecord.salenumber,readrecord.saletime);
+            //输出具体商品
+            
+        }
+    }
+}
+
+
 
 void checkout(){/*结账,打印小票并清空记录，同时将其写入文件*/
     print();
