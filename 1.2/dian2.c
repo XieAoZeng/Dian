@@ -32,16 +32,17 @@ typedef struct {
 cartitem cart[100];
 int cartsize=0 ;  //记录购物车中货物种类
 
-void drop(){/* 清空购物车 */
-    cartsize = 0;
-    printf("购物车已清空。");
-}  
  //需要实现的功能:1.添加or减少商品数目,并且显示价格  2.打印小票   3.清空记录   4.结账
 
 void drop();
 void print();
 void checkout();
 void addgoods(char *id, int delta);
+
+void drop(){/* 清空购物车 */
+    cartsize = 0;
+    printf("购物车已清空。");
+}  
 
 void print(){/*打印小票*/
     printf("Receipt\n");
