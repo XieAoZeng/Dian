@@ -106,17 +106,34 @@ void showsale(int targetDay){
         readrecord.salesum = atof(f);
         f = strtok(NULL,"|");
         readrecord.itemcount = atoi(f);
-        f = strtok(NULL,"|");
+        f = strtok(NULL,"\n");
 
         if(readrecord.daynumber == targetDay){
             daysum += readrecord.salesum;
             printf("%-4d -10s",readrecord.salenumber,readrecord.saletime);
             //输出具体商品
-            
+            char *itemstr = strtok(f,";");
+            int itemfirst = 1;
+            while (itemstr != NULL){
+                char *id = strtok(itemstr,",");
+                char *good = strtok(NULL,",");
+                int count = atoi(strtok(NULL,","));
+                if (itemfirst == 1){
+                    printf("%s x%d",good,count);
+                    itemfirst--;
+                }
+                else{
+                    printf("\t\t\t%s x%d",good,count);
+                }
+                itemstr = strtok(NULL,";");
+            }
+            printf("%.2f\n",readrecord.salesum);
         }
     }
+    printf("--------------------------------------------\n");
+    printf("Daily:%.2f",daysum);
+    fclose(fp);
 }
-
 
 
 void checkout(){/*结账,打印小票并清空记录，同时将其写入文件*/
@@ -157,7 +174,7 @@ void savetofile(Salerecord record){
     fprintf(fp, "%d|%d|%s|%.2f|%d|", record.daynumber ,record.salenumber ,record.saletime,record.salesum,record.itemcount);
     //写入每一单具体的商品信息
     for(int i = 0 ; i < record.itemcount ; i++){
-        fprintf(fp,"%s,%s,%d", record.item[i].choose.number ,record.item[i].choose.name,record.item[i].buycount);
+        fprintf(fp,"%s,%s,%d;", record.item[i].choose.number ,record.item[i].choose.name,record.item[i].buycount);
     }
     fprintf(fp,"\n");
     fclose(fp);
