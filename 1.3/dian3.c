@@ -265,6 +265,22 @@ int main(){
         else if(strcmp(input,"checkout")==0){
             checkout();
         }
+        else if(strcmp(input,"newday")==0){
+            currentday++;
+            currentsale = 0;
+            salecount = 0;
+            memset(todaysale,0 ,sizeof(todaysale));
+            printf("New day start!\n");
+        }
+        else if(strstr(input,"sales")==input){
+            char *qianzhui = strtok(input," ");
+            char *daynumber = strtok(NULL," ");
+            int  day = currentday;
+            if (daynumber != NULL){
+                day = atoi(daynumber);
+            }
+            showsale(day);
+        }
         else {          /*需实现：添加或减少商品数目*/
             char *take =strtok(input ," ");
             while (take != NULL){
@@ -282,4 +298,5 @@ int main(){
             }
         }
     }
+    return 0;
 }
