@@ -62,6 +62,13 @@ void savetofile(Salerecord record);          //将记录写入文件
 void showsale(int targetDay);            //查询文件中的销售记录
 char *getnowtime(char *str);//获取当前时间
 
+char *getnowtime(char *str){
+    time_t now = time (NULL);
+    struct tm *t = localtime(&now);
+    sprintf(str,"%02d:%02d:%02d",t->tm_hour, t->tm_min, t->tm_sec);
+    return str;
+}
+
 void drop(){/* 清空购物车 */
     cartsize = 0;
     printf("购物车已清空。");
