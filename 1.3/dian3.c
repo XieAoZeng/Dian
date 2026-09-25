@@ -117,24 +117,25 @@ void showsale(int targetDay){
 
         if(readrecord.daynumber == targetDay){
             daysum += readrecord.salesum;
-            printf("%-4d %-10s",readrecord.salenumber,readrecord.saletime);
+            printf("%-4d %-10s   ",readrecord.salenumber,readrecord.saletime);
             //输出具体商品
-            char *itemstr = strtok(f,";");
+            char *save1 ,*save2;
+            char *itemstr = strtok_r(f,";",&save1);
             int itemfirst = 1;
             while (itemstr != NULL){
-                char *id = strtok(itemstr,",");
-                char *good = strtok(NULL,",");
-                int count = atoi(strtok(NULL,","));
+                char *id = strtok_r(itemstr,",",&save2);
+                char *good = strtok_r(NULL,",",&save2);
+                int count = atoi(strtok_r(NULL,",",&save2));
                 if (itemfirst == 1){
-                    printf("%s x%d          ",good,count);
+                    printf("%s x%d  \n",good,count);
                     itemfirst--;
                 }
                 else{
-                    printf("\t\t\t%s x%d          ",good,count);
+                    printf("\t\t  %s x%d\n",good,count);
                 }
-                itemstr = strtok(NULL,";");
+                itemstr = strtok_r(NULL,";",&save1);
             }
-            printf("%.2f\n",readrecord.salesum);
+            printf("                                     %.2f\n",readrecord.salesum);
         }
     }
     printf("--------------------------------------------\n");
@@ -248,9 +249,45 @@ void addgoods(char *id, int delta){
     printf("%-10s  %.2fx%d =%.2f\n",item->choose.name,item->choose.price,item->buycount,sum);
 }
 
+ //保证继承上一次的记录
+void findmax(){
+    FILE *fp = fopen ("sales.txt","r");
+    if(fp == NULL){
+        return;
+    }
+    //查找最晚的那天最大的销售单号
+    int maxday = currentday;
+    int maxsale = currentsale;
+    char line[1000];
+    int day,sale;
+    while(fgets(line,sizeof(line),fp)!=NULL){
+        
+        if(sscanf(line,"%d|%d|",&day,&sale)==2){
+            if(day>maxday){
+                maxday = day;
+                maxsale = sale;
+            }
+            else if(day == currentday){
+                if(sale>maxsale){
+                    maxsale = sale;
+                }
+            }
+        }
+    }
+    currentday = maxday;
+    currentsale = maxsale;
+    fclose(fp);
+}
+
+
+
+
+
 
 int main(){
     char input[100];
+
+    findmax();
 
     while(1){
         printf(">");
