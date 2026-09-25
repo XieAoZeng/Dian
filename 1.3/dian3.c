@@ -38,7 +38,7 @@ int cartsize=0 ;  //记录购物车中货物种类
 typedef struct {
     int daynumber;       //日期号
     int salenumber;      //流水号
-    char saletime;       //时间
+    char saletime[30];       //时间
     cartitem item[200];  //订单商品明细
     double salesum;      //订单总价
     int itemcount;       //商品数目
@@ -71,7 +71,7 @@ char *getnowtime(char *str){
 
 void drop(){/* 清空购物车 */
     cartsize = 0;
-    printf("购物车已清空。");
+    printf("购物车已清空。\n");
 }  
 
 void print(){/*打印小票*/
@@ -89,7 +89,7 @@ void print(){/*打印小票*/
 } 
 
 void showsale(int targetDay){
-    FILE *fp = fopen("sale.txt" , "r");
+    FILE *fp = fopen("sales.txt" , "r");
     if(fp==NULL){
         printf("未找到任何销售记录。\n");
         return ;
@@ -98,7 +98,7 @@ void showsale(int targetDay){
     double daysum = 0.0;
     //表头
     printf("Date: %d\n",targetDay);
-    printf("%-4s %-10s %-20s %s\n","No.","Time","Items","Total");
+    printf("%-4s %-10s %-20s %s\n","No.","Time","Items","Ament");
     printf("--------------------------------------------\n");
     //读取记录
     char file[1000];
@@ -117,7 +117,7 @@ void showsale(int targetDay){
 
         if(readrecord.daynumber == targetDay){
             daysum += readrecord.salesum;
-            printf("%-4d -10s",readrecord.salenumber,readrecord.saletime);
+            printf("%-4d %-10s",readrecord.salenumber,readrecord.saletime);
             //输出具体商品
             char *itemstr = strtok(f,";");
             int itemfirst = 1;
@@ -126,11 +126,11 @@ void showsale(int targetDay){
                 char *good = strtok(NULL,",");
                 int count = atoi(strtok(NULL,","));
                 if (itemfirst == 1){
-                    printf("%s x%d",good,count);
+                    printf("%s x%d          ",good,count);
                     itemfirst--;
                 }
                 else{
-                    printf("\t\t\t%s x%d",good,count);
+                    printf("\t\t\t%s x%d          ",good,count);
                 }
                 itemstr = strtok(NULL,";");
             }
@@ -138,7 +138,7 @@ void showsale(int targetDay){
         }
     }
     printf("--------------------------------------------\n");
-    printf("Daily:%.2f",daysum);
+    printf("Daily:%.2f\n",daysum);
     fclose(fp);
 }
 
@@ -167,7 +167,7 @@ void checkout(){/*结账,打印小票并清空记录，同时将其写入文件*
     savetofile(newrecord);
 
     drop();
-    printf("结账完成！");
+    printf("结账完成！\n");
 } 
 
 void savetofile(Salerecord record){
